@@ -1,0 +1,64 @@
+# PROJECT_NAME: "EVA"
+TEST:
+  # 是否使用wandb,1表示使用,0表示不使用
+  WANDB: 0
+GPUS_id: 1
+FLAG: 1
+SEED: "3407"
+OUTPUT_DIR: 'experiment_result'
+NUM_GPUS: 1
+NUM_SHARDS: 1
+RUN_N_TIMES: 1
+MODEL:
+  INTRO: '094'
+  TRANSFER_TYPE: "prompt"
+  # TYPE: 'vit'
+  TYPE: 'videoMAE'
+  CHECK: './EVA/code/src/timesformer/videomae_pretrain_vit_b_1600.pth'
+
+  LINEAR:
+    MLP_SIZES: [ ]
+  PROMPT:
+    NUM_TOKENS: 2
+    DEEP: True
+    DROPOUT: 0.1
+    # DROPOUT: 0.5
+
+SOLVER:
+  SCHEDULER: "cosine"
+  PATIENCE: 300
+  LOSS: "softmax"
+  # OPTIMIZER: "sgd"
+  OPTIMIZER: "adamw"
+
+  MOMENTUM: 0.9
+
+  WEIGHT_DECAY: 1e-3
+
+  LOG_EVERY_N: 100
+
+  WARMUP_EPOCH: 5
+  TOTAL_EPOCH: 20
+
+  BASE_LR: 1e-4
+
+
+DATA:
+  NUMBER_CLASSES: 101
+  CROPSIZE: 224
+  NAME: 'ucf101'
+  BATCH_SIZE: 5
+  ROOT_DIR: './data/HMDB51/hmdb51'
+  OUTPUT_DIR: './data/HMDB51/HMDB51_frames'
+PROMPT:
+  ATTRIBUTE: False
+  ATTRIBUTE_DIR: './data/HMDB51/3fold/HMDB51Attr/'
+  ATTRIBUTE_MODE: 'concat-fusion-equal'
+#  ATTRIBUTE_MODE: 'all-cap'
+#  ATTRIBUTE_MODE: 'all-label'
+  ATTRIBUTE_DEPTH_NUM: []
+
+TRICKS:
+  ADAPTER: True
+  FLIP: False
+  CROP: True
